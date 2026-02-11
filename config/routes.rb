@@ -5,5 +5,11 @@ Rails.application.routes.draw do
 
   root "home#index"
   resources :workshops, only: %i[index show]
-  resources :bookings, only: %i[create]
+  resources :bookings, only: [ :create ] do
+    collection do
+      get :success
+    end
+  end 
+
+  post "/webhooks/stripe", to: "webhooks#stripe"
 end

@@ -1,0 +1,20 @@
+<div class="col-lg-10 mx-auto">
+  <div class="card shadow">
+    <div class="card-header">
+      <h4 class="card-title">Booking Confirmation</h4>
+    </div>
+    <div class="card-body">
+      <h1>Greetings from Webinari</h1>
+      <h3>Hello <%= @customer.full_name %>
+      <p class="lead"> Your booking for <strong><%= @workshop.name %> has been confirmed. Please find the booking details below.</strong></h3>
+      <h3>Booking Details</h3>
+      <p><strong>No of Tickets:</strong><%= @booking.no_of_tickets %></p>
+      <p><strong>Amount Paid:</strong><%= @booking.amount_paid %></p>
+      <hr>
+      <h3>Workshop Schedule</h3>
+      <h5><span class="badge bg-primary">Total Duration: <%= @workshop.total_duration %></span>
+      </h5><h5 class="mt-2"><span class="badge bg-primary">Daily Duration: <%= @workshop.daily_duration %></span>
+            </h5>
+    </div>
+  </div>
+</div>
