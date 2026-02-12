@@ -1,11 +1,19 @@
 class Booking < ApplicationRecord
   # after_create :update_workshop_sit_count
+  has_many :refunds
   belongs_to :customer
   belongs_to :workshop
 
   validate :sufficient_sits_available  # Custom validation
+  validates :order_number, presence: true, uniqueness: true
+
+  before_validation :generate_order_number
 
   private
+
+  def generate_order_number
+    self.order_number="BOOKING-#{SecureRandom.hex(5).upcase}"
+  end
 
   def sufficient_sits_available
     if workshop.remaining_sits < no_of_tickets

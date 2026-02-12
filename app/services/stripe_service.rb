@@ -39,7 +39,6 @@ class StripeService
     # Step 3: Attach to customer and set as default
     Stripe::PaymentMethod.attach(payment_method.id, { customer: stripe_customer.id })
     Stripe::Customer.update(stripe_customer.id, { invoice_settings: { default_payment_method: payment_method.id } })
-    
     payment_method
   end
 

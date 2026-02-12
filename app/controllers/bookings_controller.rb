@@ -41,10 +41,8 @@ class BookingsController < ApplicationController
       success_url: success_bookings_url + "?session_id={CHECKOUT_SESSION_ID}",
       cancel_url: workshop_url(@workshop)
     )
-   
     redirect_to session.url, allow_other_host: true
   end
-
 
   # =========================
   # SUCCESS AFTER PAYMENT
@@ -77,4 +75,9 @@ class BookingsController < ApplicationController
   redirect_to workshop_path(workshop),
               notice: "Payment successful !!! #{tickets} seat(s) booked"
 end
+
+ def booking_details
+   @booking=Booking.find(params[:id])
+ end
+
 end
