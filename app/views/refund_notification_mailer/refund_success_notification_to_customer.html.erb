@@ -1,0 +1,28 @@
+<div class="col-lg-10 col-xl-8 mx-auto">
+  <div class="card shadow">
+    <div class="card-header">
+      <h4 class="card-title">Refund Processed Successfully</h4>
+    </div>
+    <div class="card-body">
+      <h1>Greetings from Webinari!</h1>
+
+      <h3>Hello <%= @customer.full_name %></h3>
+
+      <p class="lead">This is to inform you that your refund request for <strong><%= link_to @workshop.name, workshop_url(@workshop), target: '_blank' %>(Order Number: <%= @booking.order_number %>)</strong> has been processed successfully and your money has been refunded. You will receive you money within 5-7 business days in your account. </p>
+
+      <p class="lead">Please find the refund details below:</p>
+      <hr>
+
+      <h5>No. of tickets cancelled: <%= @refund.no_of_tickets %></h5>
+      <h5>Refunded Amount: $ <%= @refund.amount_refunded %></h5>
+      <h5>Booking For: <%= link_to @workshop.name, workshop_url(@workshop), target: '_blank' %></h5>
+      <hr>
+      <% if @refund.is_partial_refund %>
+        <p class="lead">You requested for a partial refund and you are still eligible to request for <%= @refund.remaining_tickets_for_refund %> more tickets worth $ <%= @refund.remaining_amount_for_refund %>. </p>
+        <p class="lead">If you want more refund then kindly request it before <%= @workshop.start_date.strftime("%d-%m-%Y") %></p>
+      <% else %>
+        <p class="lead">You requested full amount refund and we processed that successfully and now you are not eligible to make any refund request for this booking.</p>
+      <% end %>
+    </div>
+  </div>
+</div>

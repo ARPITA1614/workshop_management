@@ -66,10 +66,17 @@ class BookingsController < ApplicationController
       booking.amount_paid = session.amount_total / 100
     end
 
-     BookingsMailer.booking_confirmation(booking).deliver_now
+     BookingsMailer.booking_confirmation(booking).deliver_later
 
     # Decrease remaining seats
     workshop.update!(remaining_sits: workshop.remaining_sits - tickets)
+    Turbo::StreamsChannel.broadcast_replace_to(
+        "workshop_#{workshop.id}",
+        target: "remaining_sits",
+        partial: "workshops/remaining_sits",
+        locals: { workshop: workshop }
+      )
+    Rails.logger.info "Turbo working!!!!!!!!!!!!!!!!!!!!!!!!!!!"
   end
 
   redirect_to workshop_path(workshop),

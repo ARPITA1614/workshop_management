@@ -3,6 +3,7 @@ class Workshop < ApplicationRecord
   friendly_id :name, use: :slugged
   has_many :bookings
   has_many :customers, through: :bookings
+  has_one_attached :image
 
   validates :name, :description, presence: true
   validates :start_date, :end_date, :start_time, :end_time, presence: true
@@ -30,6 +31,15 @@ class Workshop < ApplicationRecord
 
   def is_upcoming_workshop?
     start_date > Date.today
+  end
+
+  
+  def self.ransackable_attributes(auth_object = nil)
+    ["created_at", "description", "end_date", "end_time", "id", "id_value", "name", "registration_fee", "remaining_sits", "slug", "start_date", "start_time", "total_sits", "updated_at"]
+  end
+
+   def self.ransackable_associations(auth_object = nil)
+    ["bookings", "customers"]
   end
 end
 

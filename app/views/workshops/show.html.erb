@@ -1,9 +1,10 @@
-<% if notice %>
-  <div class="alert alert-success text-center mt-3">
-    <%= notice %>
-  </div>
-<% end %>
+<%# if notice %>
+  <!-- <div class="alert alert-success text-center mt-3">
+    <%#= notice %>
+  </div>-->
+<%# end %>
 
+<%= turbo_stream_from "workshop_#{@workshop.id}" %>
 <% if alert %>
   <div class="alert alert-danger text-center mt-3">
     <%= alert %>
@@ -42,9 +43,9 @@
 
             <h5 class="mt-2">
               Remaining Seats:
-              <span class="badge bg-warning text-dark">
-                <%= @workshop.remaining_sits %>
-              </span>
+              <!-- <span class="badge bg-warning text-dark"> -->
+                <%= render "workshops/remaining_sits", workshop: @workshop %>
+              <!-- </span> -->
             </h5>
 
             <h5 class="mt-2">
@@ -59,6 +60,9 @@
         <p class="lead mt-3 mb-3">
           <%= @workshop.description %>
         </p>
+        <% if @workshop.image.attached? %>
+       <%= image_tag @workshop.image, width:100 %>
+       <% end %>
 
         <%= link_to "Back to Workshops",
                     workshops_path,

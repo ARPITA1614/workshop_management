@@ -72,3 +72,6 @@ gem "rqrcode", "~> 2.0"
 gem "chunky_png"
 gem 'friendly_id', '~> 5.5.0'
 gem "devise"
+gem "ransack"
+gem "redis"
+gem "sidekiq"

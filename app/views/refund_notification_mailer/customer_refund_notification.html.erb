@@ -1,0 +1,17 @@
+<div class="col-lg-10 col-xl-8 mx-auto">
+    <div class="card shadow">
+      <div class="card header">
+        <h4 class="card-title">Refund Requested Accepted</h4>
+      </div>
+        <div class="card-body">
+          <h1>Greetings From Webinary</h1>
+          <p class="lead">We would like to inform you that your refund request for <strong><%= link_to @workshop.name, workshop_url(@workshop), target: '_blank' %>(Order Number :- <%= @booking.order_number %>)</strong> has been approved. We forwarded your request to our team and they will process your refund request within 24 hours. Please allow 5–7 business days for the amount to reflect in your account, depending on your bank or payment provider.If you have any questions or require further assistance, please feel free to contact us.Thank you for your understanding.</p>
+          <p class="lead">Please find refund deatils below:</p>
+          <hr>
+          <h5>No. of tickets to be cancelled: <%= @refund.no_of_tickets %></h5>
+          <h5>Refundable Amount: Rs <%= @refundable_amount %></h5>
+          <h5>Booking for: <%= link_to @workshop.name, workshop_url(@workshop), target: '_blank' %></h5>
+          </div>
+    </div>
+  </div>
+</div>

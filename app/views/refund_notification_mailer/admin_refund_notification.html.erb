@@ -1,0 +1,19 @@
+<div class="col-lg-10 col-xl-8 mx-auto">
+    <div class="card shadow">
+      <div class="card header">
+        <h4 class="card-title">Refund Requested Submitted for <%= @booking.order_number %></h4>
+      </div>
+        <div class="card-body">
+          <h1>Hey, Amin User</h1>
+          <p class="lead">A refund request submitted for <%= link_to @workshop.name, workshop_url(@workshop), target: '_blank' %>
+          by <strong><%= @customer.full_name %></strong>.</p>
+          <p class="lead">This refund request is confirm and valid and we need to take further action to proceed the refund for the customer. Below are the booking details.</p>
+          <hr>
+          <h5>No. of tickets to be cancelled: <%= @refund.no_of_tickets %></h5>
+          <h5>Refundable Amount: Rs <%= @refundable_amount %></h5>
+          <h5>Booking for: <%= link_to @workshop.name, workshop_url(@workshop), target: '_blank' %></h5>
+           <h5>Booking Date: <%= @booking.created_at.strftime("%d-%m-%Y %H:%M:%M %p") %></h5>
+          </div>
+    </div>
+  </div>
+</div>

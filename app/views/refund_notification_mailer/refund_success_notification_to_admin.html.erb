@@ -1,0 +1,25 @@
+<div class="col-lg-10 col-xl-8 mx-auto">
+  <div class="card shadow">
+    <div class="card-header">
+      <h4 class="card-title">Thank you for processing the refund for <%= @booking.order_number %></h4>
+    </div>
+    <div class="card-body">
+      <h1>Hey Admin User</h1>
+
+      <p class="lead">Thank you for processing the refund for <%= link_to @workshop.name, workshop_url(@workshop), target: '_blank' %> requested by <strong><%= @customer.full_name %></strong>. Below are the booking details.</p>
+
+      <hr>
+
+      <h5>No. of tickets cancelled: <%= @refund.no_of_tickets %></h5>
+      <h5>Refunded Amount: $ <%= @refund.amount_refunded %></h5>
+      <h5>Booking For: <%= link_to @workshop.name, workshop_url(@workshop), target: '_blank' %></h5>
+      <hr>
+      <% if @refund.is_partial_refund %>
+        <p class="lead">The customer requested for a partial refund and he is still eligible to request for <%= @refund.remaining_tickets_for_refund %> more tickets worth $ <%= @refund.remaining_amount_for_refund %>. </p>
+        <p class="lead">You will get notified about further refunds to be processed for this workshop only if customer request it before <%= @workshop.start_date.strftime("%d-%m-%Y") %></p>
+      <% else %>
+        <p class="lead">Customer requested full amount refund and that has been processed successfully and now the customer is not eligible to make any refund request for this booking.</p>
+      <% end %>
+    </div>
+  </div>
+</div>

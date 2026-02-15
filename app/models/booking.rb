@@ -9,6 +9,30 @@ class Booking < ApplicationRecord
 
   before_validation :generate_order_number
 
+  def is_refundable?
+    workshop.start_date > Date.today
+  end
+
+  
+
+
+  def self.ransackable_associations(auth_object = nil)
+    ["bookings", "customer", "refunds", "workshop"]
+  end
+
+  # 🔥 Allow ransack attributes
+ def self.ransackable_attributes(auth_object = nil)
+  [
+    "id",
+    "created_at",
+    "updated_at",
+    "customer_id",
+    "workshop_id",
+    "order_number",
+      "amount_paid"     # 🔥 ADD THIS
+  ]
+end
+
   private
 
   def generate_order_number
@@ -27,4 +51,7 @@ class Booking < ApplicationRecord
     workshop.update!(remaining_sits: new_remaining)
     Rails.logger.info "Updated remaining_sits to #{new_remaining}"  # Debug log
   end
+
+
+  
 end

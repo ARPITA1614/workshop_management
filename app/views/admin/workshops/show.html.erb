@@ -1,0 +1,37 @@
+<div class="col-lg-12 mt-5">
+  <div class="card mb-3">
+    <div class="card-body text-dark">
+      <h5 class="card-title">Name</h5>
+      <p class="card-text"><%= @workshop.name %></p>
+      <hr>
+      <h5 class="card-title">Description</h5>
+      <p class="card-text"><%= @workshop.description %></p>
+      <hr>
+      <h5 class="card-title">Start date</h5>
+      <p class="card-text"><%= @workshop.start_date %></p>
+      <hr>
+      <h5 class="card-title">End date</h5>
+      <p class="card-text"><%= @workshop.end_date %></p>
+      <hr>
+      <h5 class="card-title">Start time</h5>
+      <p class="card-text"><%= @workshop.start_time %></p>
+      <hr>
+      <h5 class="card-title">End time</h5>
+      <p class="card-text"><%= @workshop.end_time %></p>
+      <hr>
+      <h5 class="card-title">Total sits</h5>
+      <p class="card-text"><%= @workshop.total_sits %></p>
+      <hr>
+      <h5 class="card-title">Remaining_sits</h5>
+      <p class="card-text"><%= @workshop.remaining_sits %></p>
+      <hr>
+      <h5 class="card-title">Registration fee</h5>
+      <p class="card-text"><%= @workshop.registration_fee %></p>
+      <hr>
+      <% if @workshop.image.attached? %>
+       <%= image_tag @workshop.image, width:100 %>
+       <% end %>
+    </div>
+  </div>
+  <%= link_to "Back", admin_workshops_path, class: 'btn btn-dark'%>
+</div>

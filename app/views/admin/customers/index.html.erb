@@ -1,0 +1,61 @@
+<div class="col-lg-12 mt-5">
+  <div class="card mt-5 mb-5">
+    <div class="card-body">
+      <%= search_form_for @q, url: admin_customers_path do |f| %>
+        <h4>Search from Customer Attributes</h4>
+        <div class="row mt-3 mb-3">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <%= f.label :full_name %>
+              <%= f.search_field :full_name_cont, class: 'form-control mt-2 mb-2' %>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <%= f.label :email %>
+              <%= f.search_field :email_cont, class: 'form-control mt-2 mb-2' %>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <%= f.label :contact_number %>
+              <%= f.search_field :contact_number_cont, class: 'form-control mt-2 mb-2' %>
+            </div>
+          </div>
+        </div>
+        <%= f.submit class: "btn btn-primary mt-4" %>
+        <%= link_to "Reset Search", admin_customers_path, class: "btn btn-primary mt-4" %>
+      <% end %>
+    </div>
+  </div>
+  <table class="table table-bordered mt-4">
+    <thead>
+      <tr>
+        <th>Full name</th>
+        <th>Email</th>
+        <th>Contact no.</th>
+        <th>Action</th>
+      <tr>
+    </thead>
+    <tbody>
+      <% @customers.each do |customer| %>
+        <tr>
+          <td><%= link_to customer.full_name, admin_customer_path(customer) %></td>
+          <td><%= link_to customer.email, admin_customer_path(customer) %></td>
+          <td><%= customer.contact_number %></td>
+          <td>
+            <div class="dropdown">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                Actions
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                <li><%= link_to "View", admin_customer_path(customer), class: "dropdown-item" %></li>
+                <li><%= link_to "Delete", admin_customer_path(customer), class: "dropdown-item", data: { confirm: 'Are you sure you want to delete this customer?', method: :delete } %></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

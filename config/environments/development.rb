@@ -12,6 +12,9 @@ Rails.application.configure do
   # Enable server timing.
   config.server_timing = true
 
+  config.action_cable.url = "ws://localhost:3000/cable"
+  config.action_cable.allowed_request_origins = ["http://localhost:3000"]
+
   if Rails.root.join("tmp/caching-dev.txt").exist?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true

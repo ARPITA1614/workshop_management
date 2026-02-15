@@ -29,13 +29,13 @@ class StripeService
         cvc: params[:cvv]
       }
     })
-    
+
     # Step 2: Create PaymentMethod using the token
     payment_method = Stripe::PaymentMethod.create({
       type: 'card',
       card: { token: token.id }
     })
-    
+
     # Step 3: Attach to customer and set as default
     Stripe::PaymentMethod.attach(payment_method.id, { customer: stripe_customer.id })
     Stripe::Customer.update(stripe_customer.id, { invoice_settings: { default_payment_method: payment_method.id } })
@@ -53,4 +53,16 @@ class StripeService
     })
     payment_intent
   end
+  def create_stripe_refund(payment_intent_id, amount)
+   payment_intent = Stripe::PaymentIntent.retrieve(payment_intent_id)
+
+   # NEW way to get latest charge
+   charge_id = payment_intent.latest_charge
+
+   refund_params = { charge: charge_id }
+   refund_params[:amount] = (amount * 100).to_i if amount.present?
+
+   Stripe::Refund.create(refund_params)
+  end
+
 end

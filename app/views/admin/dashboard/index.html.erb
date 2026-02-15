@@ -4,6 +4,7 @@
             <p class="lead">Total workshops: <%= @workshop_count %> </p>
             <p class="lead">Total workshops: <%= @upcoming_workshop_count %>  </p>
             <p class="lead"> Total workshops: <%= @past_workshop_count %></p>
+            <%= link_to "View All Workshops", admin_workshops_path, class: "btn btn-primary" %>
         </div>
     </div>
 </div>
@@ -12,6 +13,7 @@
         <div class="card-body">
             <p class="lead">Total Bookings: <%= @booking_count %> </p>
             <p class="lead">Total revenue: Rs. <%= @revenue_earned %> </p>
+             <%= link_to "View All Bookings", admin_bookings_path, class: "btn btn-primary" %>
         </div>
     </div>
 </div>
@@ -19,6 +21,32 @@
     <div class="card shadow mt-5">
         <div class="card-body">
             <p class="lead">Total Customers: <%= @customer_count %> </p>
+             <%= link_to "View All Customers", admin_customers_path, class: "btn btn-primary" %>
+        </div>
+    </div>
+</div>
+<div class="col-lg-6">
+    <div class="card shadow mt-5">
+        <div class="card-body">
+            <p class="lead fw-bold">Refundable Bookings:- <%= @refundable_bookings.count %> </p>
+            <% @refundable_bookings.each do |booking| %>
+            <p class="lead"><%= link_to booking.workshop.name, admin_booking_path(booking) %></p>
+            <% end %>
+        </div>
+    </div>
+</div>
+<div class="col-lg-6">
+    <div class="card shadow mt-5">
+        <div class="card-body">
+            <p class="lead fw-bold">Refunds to be processed:- <%= @active_refunds.count %> </p>
+           <ul class="list-group">
+            <% @active_refunds.each do |refund| %>
+            <li class="list-group-item">
+                <p class="lead"><%= link_to refund.booking.workshop.name, admin_workshop_path(refund.booking.workshop) %></p>
+                <p class="lead"><%= refund.no_of_tickets %>Tickets (Rs <%= refund.amount_to_be_refunded %>) to be refunded</p> 
+            <%= link_to "Process Refund", process_refund_admin_refund_path(refund), class: "btn btn-primary", method: :patch %>
+            </li>
+            <% end %>             
         </div>
     </div>
 </div>
