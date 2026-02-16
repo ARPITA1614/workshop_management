@@ -1,24 +1,17 @@
 class BookingsController < ApplicationController
-  # =========================
-  # CREATE CHECKOUT SESSION
-  # =========================
+  before_action :authenticate_customer!
+
   def create
     @workshop = Workshop.find(params[:workshop_id])
-    tickets = params[:no_of_tickets].to_i
 
-    if @workshop.remaining_sits < tickets
-      redirect_to workshop_path(@workshop),
-                  alert: "Not enough seats available"
-      return
-    end
-
-    # Create or find customer
-    customer = Customer.find_or_create_by(email: params[:email]) do |c|
-      c.full_name = params[:full_name]
-      c.contact_number = params[:contact_number]
-    end
-
-    amount = tickets * @workshop.registration_fee
+    booking = current_customer.bookings.create!(
+      workshop: @workshop,
+      # full_name: params[:full_name],
+      # email: params[:email],
+      # contact_number: params[:contact_number],
+      no_of_tickets: params[:no_of_tickets],
+      # state: "pending"
+    )
 
     session = Stripe::Checkout::Session.create(
       payment_method_types: ['card'],
@@ -28,63 +21,32 @@ class BookingsController < ApplicationController
           product_data: {
             name: @workshop.name
           },
-          unit_amount: amount * 100
+          unit_amount: (@workshop.registration_fee * 100).to_i
         },
-        quantity: tickets
+        quantity: booking.no_of_tickets
       }],
       mode: 'payment',
-      metadata: {
-        workshop_id: @workshop.id.to_s,
-        tickets: tickets.to_s,
-        customer_id: customer.id.to_s
-      },
       success_url: success_bookings_url + "?session_id={CHECKOUT_SESSION_ID}",
-      cancel_url: workshop_url(@workshop)
+      cancel_url: workshop_url(@workshop),
+      metadata: {
+        booking_id: booking.id
+      }
     )
+
+    # booking.update(stripe_session_id: session.id)
+
     redirect_to session.url, allow_other_host: true
   end
 
-  # =========================
-  # SUCCESS AFTER PAYMENT
-  # =========================
+
   def success
   session = Stripe::Checkout::Session.retrieve(params[:session_id])
 
-  if session.payment_status == "paid"
-    workshop_id = session.metadata["workshop_id"]
-    tickets = session.metadata["tickets"].to_i
-    customer_id = session.metadata["customer_id"]
+  booking_id = session.metadata["booking_id"]
+  booking = Booking.find(booking_id)
 
-    workshop = Workshop.find(workshop_id)
-    customer = Customer.find(customer_id)
-
-    # Create booking if not already created by webhook
-    booking =Booking.find_or_create_by(stripe_transaction_id: session.payment_intent) do |booking|
-      booking.workshop = workshop
-      booking.customer = customer
-      booking.no_of_tickets = tickets
-      booking.amount_paid = session.amount_total / 100
-    end
-
-     BookingsMailer.booking_confirmation(booking).deliver_later
-
-    # Decrease remaining seats
-    workshop.update!(remaining_sits: workshop.remaining_sits - tickets)
-    Turbo::StreamsChannel.broadcast_replace_to(
-        "workshop_#{workshop.id}",
-        target: "remaining_sits",
-        partial: "workshops/remaining_sits",
-        locals: { workshop: workshop }
-      )
-    Rails.logger.info "Turbo working!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-  end
-
-  redirect_to workshop_path(workshop),
-              notice: "Payment successful !!! #{tickets} seat(s) booked"
+  redirect_to workshop_path(booking.workshop),
+              notice: "Payment successful!"
 end
-
- def booking_details
-   @booking=Booking.find(params[:id])
- end
 
 end

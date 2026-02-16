@@ -1,0 +1,114 @@
+<div class="container mt-5">
+
+  <div class="card shadow-lg border-0">
+    <div class="card-header bg-dark text-white">
+      <h4 class="mb-0">Booking Details</h4>
+    </div>
+
+    <div class="card-body">
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <strong>Order Number:</strong>
+          <p><%= @booking.order_number %></p>
+        </div>
+
+        <div class="col-md-6">
+          <strong>Status:</strong>
+          <p>
+            <span class="badge bg-success">
+              Confirmed
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <hr>
+
+      <h5 class="mb-3">Workshop Information</h5>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <strong>Workshop Name:</strong>
+          <p><%= @booking.workshop.name %></p>
+        </div>
+
+        <div class="col-md-6">
+          <strong>Start Date:</strong>
+          <p><%= @booking.workshop.start_date.strftime("%d %B %Y") %></p>
+        </div>
+
+         <div class="col-md-6">
+          <strong>End Date:</strong>
+          <p><%= @booking.workshop.end_date.strftime("%d %B %Y") %></p>
+        </div>
+      </div>
+
+      <hr>
+
+      <h5 class="mb-3">Booking Summary</h5>
+
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <strong>Number of Tickets:</strong>
+          <p><%= @booking.no_of_tickets %></p>
+        </div>
+
+        <div class="col-md-4">
+          <strong>Price per Ticket:</strong>
+          <p>₹ <%= @booking.workshop.registration_fee %></p>
+        </div>
+
+        <div class="col-md-4">
+          <strong>Total Amount:</strong>
+          <p class="fw-bold text-success">
+            ₹ <%= @booking.amount_paid %>
+          </p>
+        </div>
+      </div>
+
+      <hr>
+
+      <h5 class="mb-3">Customer Information</h5>
+
+      <p><strong>Name:</strong> <%= @booking.customer.full_name %></p>
+      <p><strong>Email:</strong> <%= @booking.customer.email %></p>
+      <p><strong>Contact:</strong> <%= @booking.customer.contact_number %></p>
+
+      <hr>
+
+      <div class="d-flex justify-content-between">
+
+        <%= link_to "Back to My Bookings",
+                    bookings_path,
+                    class: "btn btn-secondary" %>
+
+       <% refund = @booking.refunds.last %>
+
+<% if refund.nil? %>
+
+  <%= link_to "Request Refund",
+              new_refund_path(booking_id: @booking.id),
+              class: "btn btn-danger" %>
+
+<% elsif refund.state == "pending" %>
+
+  <span class="badge bg-warning p-2">
+    Refund Requested
+  </span>
+
+<% elsif refund.state == "success" %>
+
+  <span class="badge bg-success p-2">
+    Refund Processed
+  </span>
+
+<% end %>
+
+
+      </div>
+
+    </div>
+  </div>
+
+</div>

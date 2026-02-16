@@ -1,4 +1,5 @@
 class Booking < ApplicationRecord
+ 
   # after_create :update_workshop_sit_count
   has_many :refunds
   belongs_to :customer

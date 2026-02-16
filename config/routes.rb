@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
+  devise_for :customers
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
- 
+
   mount ActionCable.server => "/cable"
 
 
@@ -20,12 +21,13 @@ Rails.application.routes.draw do
   end
 
   resources :workshops, only: %i[index show]
-  resources :bookings, only: [ :create ] do
-    get :booking_details, on: :member
-    collection do
-      get :success
-    end
-  end 
+ resources :bookings, only: [:index, :show, :create] do
+  get :booking_details, on: :member
+  collection do
+    get :success
+  end
+end
+
 
   namespace :admin do
     get "dashboard" => "dashboard#index"

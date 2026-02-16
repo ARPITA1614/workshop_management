@@ -1,7 +1,12 @@
 class Customer < ApplicationRecord
-  has_many :bookings
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable,  and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable, :trackable
+
+  has_many :bookings, dependent: :destroy
   has_many :workshops, through: :bookings
-  has_many :refunds
+  has_many :refunds, dependent: :destroy
 
   validates :full_name, :contact_number, presence: true
   validates :email, presence: true, uniqueness: true
