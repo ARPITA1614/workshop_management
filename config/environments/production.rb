@@ -23,6 +23,7 @@ Rails.application.configure do
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
+  config.public_file_server.enabled = true
 
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
   # config.assume_ssl = true
@@ -78,6 +79,10 @@ Rails.application.configure do
 
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [ :id ]
+  config.action_mailer.default_url_options = {
+  host: ENV["HOST_NAME"],
+  protocol: "https"
+}
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [
