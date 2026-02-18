@@ -52,7 +52,13 @@ Rails.application.configure do
 
   # Replace the default in-process and non-durable queuing backend for Active Job.
   config.active_job.queue_adapter = :inline
-  config.action_cable.subscription_adapter = { adapter: "async" }
+ config.action_cable.mount_path = "/cable"
+config.action_cable.url = "wss://workshop-management-bs7g.onrender.com/cable"
+config.action_cable.allowed_request_origins = [ "https://workshop-management-bs7g.onrender.com", /http:\/\/workshop-management-bs7g.*/ ]
+
+# This is the line that replaces the broken one:
+# We set it inside the cable.yml file usually, but you can force it here:
+config.active_job.queue_adapter = :inline
   config.solid_queue.connects_to = { database: { writing: :queue } }
 
   # Ignore bad email addresses and do not raise email delivery errors.
