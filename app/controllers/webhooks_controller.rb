@@ -48,7 +48,7 @@ class WebhooksController < ApplicationController
         amount_paid: session.amount_total / 100
       )
 
-      BookingsMailer.booking_confirmation(booking).deliver_later
+      BookingsMailer.booking_confirmation(booking).deliver_now
 
     else
       Stripe::Refund.create(payment_intent: session.payment_intent)
