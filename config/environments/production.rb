@@ -83,6 +83,11 @@ Rails.application.configure do
   host: ENV["HOST_NAME"],
   protocol: "https"
 }
+Rails.application.routes.default_url_options = {
+  host: ENV["HOST_NAME"],
+  protocol: "https"
+}
+
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [
