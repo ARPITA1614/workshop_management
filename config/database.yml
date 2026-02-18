@@ -26,12 +26,13 @@ production:
   primary: &primary_production
     adapter: postgresql
     url: <%= ENV["DATABASE_URL"] %>
-  # Tell Solid Cable and Solid Queue to use the primary Postgres DB
+  # Map all specialized "Solid" services to the same primary PostgreSQL DB
   cable:
     <<: *primary_production
   queue:
     <<: *primary_production
-
+  cache:
+    <<: *primary_production
 
 
 # production:
