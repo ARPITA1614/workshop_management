@@ -22,13 +22,15 @@ test:
 
 # Store production database in the storage/ directory, which by default
 # is mounted as a persistent Docker volume in config/deploy.yml.
-
 production:
-  <<: *default
-  adapter: postgresql
-  encoding: unicode
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS"){ 5 } %> 
-  url: <%= ENV["DATABASE_URL"] %>
+  primary: &primary_production
+    adapter: postgresql
+    url: <%= ENV["DATABASE_URL"] %>
+  # Tell Solid Cable and Solid Queue to use the primary Postgres DB
+  cable:
+    <<: *primary_production
+  queue:
+    <<: *primary_production
 
 
 
