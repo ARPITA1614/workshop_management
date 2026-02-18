@@ -7,41 +7,45 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+puts "Cleaning out old workshop data..."
+# This command deletes every row in the workshops table
+Workshop.destroy_all 
 
+puts "Creating fresh Workshop records..."
 puts "Workshops are being created"
 
 workshops = Workshop.create([
   {
   name: "Full Stack ROR Development BootCamp",
   description: "It is very good workshop must attend it. It will increase your knowledge",
-  start_date: Date.today + 5.days,
-  end_date: Date.today + 10.days,
+  start_date: Date.today + 35.days,
+  end_date: Date.today + 45.days,
   start_time: "10:00 AM",
   end_time: "3:00 PM",
   total_sits: 100,
-  remaining_sits: 0,
+  remaining_sits: 100,
   registration_fee: 1500
 },
  {
   name: "Full Stack Mern Stack Development BootCamp",
   description: "It is very good workshop must attend it. It will increase your knowledge",
-  start_date: Date.today + 10.days,
-  end_date: Date.today + 15.days,
+  start_date: Date.today + 40.days,
+  end_date: Date.today + 50.days,
   start_time: "11:00 AM",
   end_time: "4:00 PM",
   total_sits: 80,
-  remaining_sits: 0,
+  remaining_sits: 80,
   registration_fee: 2000
 },
  {
   name: "Full Stack using Python Development BootCamp",
   description: "It is very good workshop must attend it. It will increase your knowledge",
-  start_date: Date.today + 12.days,
-  end_date: Date.today + 20.days,
+  start_date: Date.today + 52.days,
+  end_date: Date.today + 62.days,
   start_time: "12:00 AM",
   end_time: "4:00 PM",
   total_sits: 100,
-  remaining_sits: 0,
+  remaining_sits: 100,
   registration_fee: 2000
 }
 
@@ -54,34 +58,34 @@ workshops = Workshop.create([
   {
     name: 'Ruby on Rails Full Stack Development Bootcamp',
     description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-    start_date: Date.today + 15.days,
-    end_date: Date.today + 22.days,
+    start_date: Date.today + 45.days,
+    end_date: Date.today + 55.days,
     start_time: '10:00 AM',
     end_time: '4:00 PM',
     total_sits: 100,
-    remaining_sits: 0,
+    remaining_sits: 100,
     registration_fee: 500
   },
   {
     name: 'Node Js Full Stack Development Bootcamp',
     description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-    start_date: Date.today + 25.days,
-    end_date: Date.today + 32.days,
+    start_date: Date.today + 60.days,
+    end_date: Date.today + 70.days,
     start_time: '10:00 AM',
     end_time: '4:00 PM',
     total_sits: 100,
-    remaining_sits: 0,
+    remaining_sits: 100,
     registration_fee: 450
   },
   {
     name: 'Ruby on Rails Ninja Bootcamp',
     description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-    start_date: Date.today + 35.days,
-    end_date: Date.today + 42.days,
+    start_date: Date.today + 50.days,
+    end_date: Date.today + 60.days,
     start_time: '10:00 AM',
     end_time: '4:00 PM',
     total_sits: 100,
-    remaining_sits: 0,
+    remaining_sits: 100,
     registration_fee: 750
   },
   {
@@ -92,7 +96,7 @@ workshops = Workshop.create([
     start_time: '10:00 AM',
     end_time: '4:00 PM',
     total_sits: 100,
-    remaining_sits: 0,
+    remaining_sits: 100,
     registration_fee: 500
   },
   {
@@ -103,7 +107,7 @@ workshops = Workshop.create([
     start_time: '10:00 AM',
     end_time: '4:00 PM',
     total_sits: 250,
-    remaining_sits: 0,
+    remaining_sits: 250,
     registration_fee: 1000
   },
   {
@@ -114,7 +118,7 @@ workshops = Workshop.create([
     start_time: '10:00 AM',
     end_time: '4:00 PM',
     total_sits: 400,
-    remaining_sits: 0,
+    remaining_sits: 400,
     registration_fee: 2000
   },
   {
@@ -125,7 +129,7 @@ workshops = Workshop.create([
     start_time: '10:00 AM',
     end_time: '4:00 PM',
     total_sits: 250,
-    remaining_sits: 0,
+    remaining_sits: 250,
     registration_fee: 1000
   },
   {
@@ -136,7 +140,7 @@ workshops = Workshop.create([
     start_time: '10:00 AM',
     end_time: '4:00 PM',
     total_sits: 250,
-    remaining_sits: 0,
+    remaining_sits: 250,
     registration_fee: 1000
   },
   {
@@ -166,6 +170,61 @@ workshops = Workshop.create([
     description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
     start_date: Date.today - 50.days,
     end_date: Date.today - 37.days,
+    start_time: '10:00 AM',
+    end_time: '4:00 PM',
+    total_sits: 250,
+    remaining_sits: 0,
+    registration_fee: 1000
+  },
+  {
+    name: 'A Tour To Ruby on Rails Web Development Framework',
+    description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
+    start_date: Date.today - 29.days,
+    end_date: Date.today - 22.days,
+    start_time: '10:00 AM',
+    end_time: '4:00 PM',
+    total_sits: 250,
+    remaining_sits: 0,
+    registration_fee: 1000
+  },
+  {
+    name: 'DSA using Java',
+    description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
+    start_date: Date.today - 29.days,
+    end_date: Date.today - 22.days,
+    start_time: '10:00 AM',
+    end_time: '4:00 PM',
+    total_sits: 250,
+    remaining_sits: 250,
+    registration_fee: 1000
+  },
+  {
+    name: 'Mern Stack',
+    description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
+    start_date: Date.today - 29.days,
+    end_date: Date.today - 22.days,
+    start_time: '10:00 AM',
+    end_time: '4:00 PM',
+    total_sits: 250,
+    remaining_sits: 250,
+    registration_fee: 1000
+  },
+  {
+    name: 'A Tour To PHP',
+    description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
+    start_date: Date.today - 29.days,
+    end_date: Date.today - 22.days,
+    start_time: '10:00 AM',
+    end_time: '4:00 PM',
+    total_sits: 250,
+    remaining_sits: 250,
+    registration_fee: 1000
+  },
+  {
+    name: 'A Tour To .NET',
+    description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
+    start_date: Date.today - 29.days,
+    end_date: Date.today - 22.days,
     start_time: '10:00 AM',
     end_time: '4:00 PM',
     total_sits: 250,
