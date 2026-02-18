@@ -79,9 +79,9 @@ config.active_job.queue_adapter = :inline
   domain: "gmail.com",
   user_name: ENV["gmail_username"],
   password: ENV["gmail_password"],
-  authentication: "plain",
-  open_timeout: 30, # Give it way more time
-  read_timeout: 30
+  authentication: "plain"
+  # open_timeout: 30, # Give it way more time
+  # read_timeout: 30
   # enable_starttls_auto: true
 }
 

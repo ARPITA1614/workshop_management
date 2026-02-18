@@ -31,33 +31,38 @@ class WebhooksController < ApplicationController
   private
 
   def handle_checkout_completed(session)
-  booking = Booking.find(session.metadata["booking_id"])
-  workshop = booking.workshop
-Workshop.transaction do
-    workshop.lock!
+    booking = Booking.find(session.metadata["booking_id"])
+    workshop = booking.workshop
 
-    if workshop.remaining_sits >= booking.no_of_tickets
-      workshop.update!(
-        remaining_sits: workshop.remaining_sits - booking.no_of_tickets
-      )
+    Workshop.transaction do
+      workshop.lock!
 
-      booking.update!(
-        stripe_transaction_id: session.payment_intent,
-        amount_paid: session.amount_total / 100
-      )
+      if workshop.remaining_sits >= booking.no_of_tickets
+        # 1. Update Database (Instant)
+        workshop.update!(
+          remaining_sits: workshop.remaining_sits - booking.no_of_tickets
+        )
 
-      # WRAP THE MAILER HERE
-      begin
-        BookingsMailer.booking_confirmation(booking).deliver_now
-      rescue StandardError => e
-        # This catches the Net::OpenTimeout or SMTP errors
-        # It logs the error so you can see it, but allows the transaction to FINISH
-        Rails.logger.error "Booking Successful, but Email Failed: #{e.message}"
+        booking.update!(
+          stripe_transaction_id: session.payment_intent,
+          amount_paid: session.amount_total / 100
+        )
+        # 2. EMAIL MOVED OUT OF THE TRANSACTION WAIT-LINE
+        # We use Thread.new to prevent the 31-second lag from blocking the UI
+        Thread.new do
+          begin
+            # Use a fresh database connection for the thread
+            ActiveRecord::Base.connection_pool.with_connection do
+              BookingsMailer.booking_confirmation(booking).deliver_now
+            end
+          rescue StandardError => e
+            Rails.logger.error "Background Email Failed: #{e.message}"
+          end
+        end
+
+      else
+        Stripe::Refund.create(payment_intent: session.payment_intent)
       end
-
-    else
-      Stripe::Refund.create(payment_intent: session.payment_intent)
-    end
+    end # Transaction ends here, UI updates INSTANTLY
   end
-end
 end
