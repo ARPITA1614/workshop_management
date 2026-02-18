@@ -33,12 +33,10 @@ class WebhooksController < ApplicationController
   def handle_checkout_completed(session)
   booking = Booking.find(session.metadata["booking_id"])
   workshop = booking.workshop
-
-  Workshop.transaction do
+Workshop.transaction do
     workshop.lock!
 
     if workshop.remaining_sits >= booking.no_of_tickets
-
       workshop.update!(
         remaining_sits: workshop.remaining_sits - booking.no_of_tickets
       )
@@ -48,7 +46,14 @@ class WebhooksController < ApplicationController
         amount_paid: session.amount_total / 100
       )
 
-      BookingsMailer.booking_confirmation(booking).deliver_now
+      # WRAP THE MAILER HERE
+      begin
+        BookingsMailer.booking_confirmation(booking).deliver_now
+      rescue StandardError => e
+        # This catches the Net::OpenTimeout or SMTP errors
+        # It logs the error so you can see it, but allows the transaction to FINISH
+        Rails.logger.error "Booking Successful, but Email Failed: #{e.message}"
+      end
 
     else
       Stripe::Refund.create(payment_intent: session.payment_intent)
