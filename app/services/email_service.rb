@@ -12,10 +12,14 @@ class EmailService
     workshop = booking.workshop
 
     # 1️⃣ Generate Booking URL
+    # #
+    # url = Rails.application.routes.url_helpers
+    #         .booking_details_booking_url(@booking)
+
     url = Rails.application.routes.url_helpers
             .booking_details_booking_url(
               booking,
-              host: "your-app-name.onrender.com",
+              host: "workshop-management-bs7g.onrender.com",
               protocol: "https"
             )
 
