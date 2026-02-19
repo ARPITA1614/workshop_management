@@ -77,7 +77,9 @@ config.active_job.queue_adapter = :inline
   user_name:            ENV['gmail_username'],
   password:             ENV['gmail_password'],
   authentication:       'login',
-  enable_starttls_auto: true
+  enable_starttls_auto: true,
+  open_timeout:         5,
+  read_timeout:         5
 }
   # config.action_mailer.smtp_settings = {
   # address: 'smtp-relay.brevo.com',
