@@ -21,7 +21,7 @@ class BookingsMailer < ApplicationMailer
     # Send email via Resend
     Resend.api_key = ENV['RESEND_API_KEY']
 
-    Resend::Emails.deliver({
+    Resend::Emails.send({
       from: 'Webinari <onboarding@resend.dev>',
       to: @customer.email,
       subject: "Booking Confirmation for #{@workshop.name}",
