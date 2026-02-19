@@ -235,7 +235,7 @@ workshops = Workshop.create([
 
 puts "Workshop has been created"
 puts "Admin creating or updating"
-admin=AdminUser.find_or_initialize_by!(email: "arpitadmn@gmail.com") 
+admin=AdminUser.find_or_initialize_by(email: "arpitadmn@gmail.com") 
   admin.password = "password"
   admin.password_confirmation = "password"
   admin.save!
