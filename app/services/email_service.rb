@@ -25,7 +25,7 @@ class EmailService
 
     # 3️⃣ Convert to Base64 (Brevo requires base64 attachments)
     encoded_qr = Base64.strict_encode64(png.to_s)
-    Rails.logger "heyyyy"
+    Rails.logger.info "heyyyy"
     api_instance = SibApiV3Sdk::TransactionalEmailsApi.new
 
     send_smtp_email = SibApiV3Sdk::SendSmtpEmail.new(

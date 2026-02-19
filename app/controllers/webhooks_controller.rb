@@ -32,8 +32,7 @@ class WebhooksController < ApplicationController
 
   def handle_checkout_completed(session)
     booking = Booking.find(session.metadata["booking_id"])
-    return if 
-    booking.stripe_transaction_id.present?
+    return if booking.stripe_transaction_id.present?
 
     workshop = booking.workshop
     refunded=false
