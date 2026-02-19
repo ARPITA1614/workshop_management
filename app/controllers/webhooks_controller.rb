@@ -69,8 +69,8 @@ class WebhooksController < ApplicationController
       end
     end # Transaction ends here, UI updates INSTANTLY
     return if refunded
-    begin 
-     EmailService.send_booking_confirmation(booking.customer.email, booking.customer.full_name)
+    begin
+     EmailService.send_booking_confirmation(booking)
     rescue SibApiV3Sdk::ApiError => e
   Rails.logger.error "Brevo Status Code: #{e.code}"
   Rails.logger.error "Brevo Response Body: #{e.response_body}"
