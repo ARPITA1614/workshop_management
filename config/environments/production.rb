@@ -72,18 +72,26 @@ config.active_job.queue_adapter = :inline
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-  address: "smtp.gmail.com",
-  tls: true,
-  port: 465,
-  # port: 587,
-  domain: "gmail.com",
-  user_name: ENV["gmail_username"],
-  password: ENV["gmail_password"],
-  authentication: "plain"
+  address:              'smtp-relay.brevo.com',
+  port:                 587,
+  user_name:            ENV['gmail_username'],
+  password:             ENV['gmail_password'],
+  authentication:       'login',
+  enable_starttls_auto: true
+}
+  # config.action_mailer.smtp_settings = {
+  # address: 'smtp-relay.brevo.com',
+  # tls: true,
+  # port: 465,
+  # # port: 587,
+  # domain: "gmail.com",
+  # user_name: ENV["gmail_username"],
+  # password: ENV["gmail_password"],
+  # authentication: "plain"
   # open_timeout: 30, # Give it way more time
   # read_timeout: 30
   # enable_starttls_auto: true
-}
+#}
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
