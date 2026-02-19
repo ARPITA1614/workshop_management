@@ -35,7 +35,7 @@ class EmailService
         name: "Workshop Booking App"
       },
       subject: "Booking Confirmation for #{workshop.name}",
-      html_content: "
+      htmlContent: "
         <h2>Hello #{customer.full_name},</h2>
         <p>Your booking for <strong>#{workshop.name}</strong> is confirmed 🎉</p>
         <p>Date: #{workshop.start_date}</p>
