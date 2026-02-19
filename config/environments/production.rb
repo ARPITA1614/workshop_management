@@ -58,7 +58,7 @@ config.action_cable.allowed_request_origins = [ "https://workshop-management-bs7
 
 # This is the line that replaces the broken one:
 # We set it inside the cable.yml file usually, but you can force it here:
-config.active_job.queue_adapter = :async
+config.active_job.queue_adapter = :inline
   config.solid_queue.connects_to = { database: { writing: :queue } }
 
   # Ignore bad email addresses and do not raise email delivery errors.
