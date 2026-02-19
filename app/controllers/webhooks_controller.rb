@@ -49,16 +49,16 @@ class WebhooksController < ApplicationController
         )
         # 2. EMAIL MOVED OUT OF THE TRANSACTION WAIT-LINE
         # We use Thread.new to prevent the 31-second lag from blocking the UI
-        Thread.new do
-          begin
-            # Use a fresh database connection for the thread
-            ActiveRecord::Base.connection_pool.with_connection do
-              BookingsMailer.booking_confirmation(booking).deliver_now!
-            end
-          rescue StandardError => e
-            Rails.logger.error "Background Email Failed: #{e.message}"
-          end
-        end
+        # Thread.new do
+        #   begin
+        #     # Use a fresh database connection for the thread
+        #     ActiveRecord::Base.connection_pool.with_connection do
+               MailingJob.perform_later(booking.id)
+        #     end
+        #   rescue StandardError => e
+        #     Rails.logger.error "Background Email Failed: #{e.message}"
+        #   end
+        # end
 
       else
         Stripe::Refund.create(payment_intent: session.payment_intent)
