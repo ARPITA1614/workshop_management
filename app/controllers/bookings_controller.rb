@@ -1,5 +1,5 @@
 class BookingsController < ApplicationController
-  before_action :authenticate_customer!
+  before_action :authenticate_customer!, except: [:booking_details]
 
   def create
     @workshop = Workshop.find(params[:workshop_id])
@@ -47,6 +47,11 @@ class BookingsController < ApplicationController
 
   redirect_to workshop_path(booking.workshop),
               notice: "Payment successful!"
-end
+  end
+
+  def booking_details
+    @booking=Booking.includes(:workshop, :customer).find(params[:id])
+  end
+
 
 end
