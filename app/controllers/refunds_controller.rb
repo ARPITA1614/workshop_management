@@ -41,8 +41,8 @@ class RefundsController < ApplicationController
   private
 
   def send_refund_notifications
-    RefundNotificationMailer.admin_refund_notification(@refund).deliver_now
-    RefundNotificationMailer.customer_refund_notification(@refund).deliver_now
+    RefundNotificationMailer.admin_refund_notification(@refund).deliver_now!
+    RefundNotificationMailer.customer_refund_notification(@refund).deliver_now!
   end
 
   def set_refund_with_parents

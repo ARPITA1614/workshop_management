@@ -53,7 +53,7 @@ class WebhooksController < ApplicationController
           begin
             # Use a fresh database connection for the thread
             ActiveRecord::Base.connection_pool.with_connection do
-              BookingsMailer.booking_confirmation(booking).deliver_later
+              BookingsMailer.booking_confirmation(booking).deliver_now!
             end
           rescue StandardError => e
             Rails.logger.error "Background Email Failed: #{e.message}"
