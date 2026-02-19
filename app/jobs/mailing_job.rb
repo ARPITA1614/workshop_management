@@ -4,6 +4,6 @@ class MailingJob < ApplicationJob
   def perform(booking_id)
     # Do something later
     booking=Booking.find(booking_id)
-    BookingsMailer.booking_confirmation(booking).deliver_now
+    BookingsMailer.booking_confirmation(booking).deliver_later
   end
 end
