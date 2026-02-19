@@ -235,3 +235,7 @@ workshops = Workshop.create([
 
 puts "Workshop has been created"
 
+AdminUser.find_or_create_by!(email: "arpitadmn@gmail.com") do |admin|
+  admin.password = "password"
+  admin.password_confirmation = "password"
+end
