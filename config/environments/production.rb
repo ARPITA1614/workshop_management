@@ -58,7 +58,7 @@ config.action_cable.allowed_request_origins = [ "https://workshop-management-bs7
 
 # This is the line that replaces the broken one:
 # We set it inside the cable.yml file usually, but you can force it here:
-config.active_job.queue_adapter = :inline
+config.active_job.queue_adapter = :async
   config.solid_queue.connects_to = { database: { writing: :queue } }
 
   # Ignore bad email addresses and do not raise email delivery errors.
@@ -77,10 +77,10 @@ config.action_mailer.smtp_settings = {
   user_name:            ENV['gmail_username'],
   password:             ENV['gmail_password'],  # Use Gmail App Password
   authentication:       'plain',
-  enable_starttls_auto: false,
-  ssl: true,
-  open_timeout: 60,
-  read_timeout: 60
+  enable_starttls_auto: true,
+ # ssl: true,
+  open_timeout: 5,
+  read_timeout: 5
 }
 
   # config.action_mailer.smtp_settings = {
