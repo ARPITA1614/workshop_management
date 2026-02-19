@@ -7,7 +7,7 @@ class EmailService
     SibApiV3Sdk.configure do |config|
       config.api_key['api-key'] = ENV['BREVO_API_KEY']
     end
-
+     Rails.logger.info "heyyyyyyyyyyy"
     api_instance = SibApiV3Sdk::TransactionalEmailsApi.new
 
     send_smtp_email = SibApiV3Sdk::SendSmtpEmail.new(
@@ -17,7 +17,7 @@ class EmailService
         name: "Workshop Booking App"
       },
       subject: "Booking Confirmed 🎉",
-      html_content: "
+      htmlContent: "
         <h1>Hello #{user_name},</h1>
         <p>Your workshop booking is confirmed.</p>
         <p>Thank you for registering!</p>
