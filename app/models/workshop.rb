@@ -1,7 +1,7 @@
 class Workshop < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
-  has_many :bookings
+   has_many :bookings, dependent: :destroy
   has_many :customers, through: :bookings
   has_one_attached :image
 
