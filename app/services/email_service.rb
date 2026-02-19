@@ -8,7 +8,7 @@ class EmailService
       config.api_key['api-key'] = ENV['BREVO_API_KEY']
     end
 
-    user     = booking.user
+    customer = booking.customer
     workshop = booking.workshop
 
     # 1️⃣ Generate Booking URL
@@ -29,14 +29,14 @@ class EmailService
     api_instance = SibApiV3Sdk::TransactionalEmailsApi.new
 
     send_smtp_email = SibApiV3Sdk::SendSmtpEmail.new(
-      to: [{ email: user.email, name: user.full_name }],
+      to: [{ email: customer.email, name: customer.full_name }],
       sender: {
         email: "arpitadmn@gmail.com",
         name: "Workshop Booking App"
       },
       subject: "Booking Confirmation for #{workshop.name}",
       html_content: "
-        <h2>Hello #{user.full_name},</h2>
+        <h2>Hello #{customer.full_name},</h2>
         <p>Your booking for <strong>#{workshop.name}</strong> is confirmed 🎉</p>
         <p>Date: #{workshop.start_date}</p>
         <p>Please find your QR code attached.</p>
