@@ -16,6 +16,9 @@ class BookingsMailer < ApplicationMailer
       mime_type: "image/png",
       content: png.to_s
     }
+     puts "=== MAIL CONFIG ==="
+    puts "Username: #{ENV['gmail_username'].inspect}"
+    puts "Password set?: #{ENV['gmail_password'].present?}"
 
     mail(
       to: @customer.email,

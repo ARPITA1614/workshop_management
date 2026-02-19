@@ -42,4 +42,5 @@ end
   end
 
   post "/webhooks/stripe", to: "webhooks#stripe"
+  get '/test-email', to: 'home#test_email'
 end
