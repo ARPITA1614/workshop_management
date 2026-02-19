@@ -73,13 +73,14 @@ config.active_job.queue_adapter = :inline
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
   address:              'smtp-relay.brevo.com',
-  port:                 587,
+  port:                 465,
   user_name:            ENV['gmail_username'],
   password:             ENV['gmail_password'],
-  authentication:       'login',
-  enable_starttls_auto: true,
-  open_timeout:         5,
-  read_timeout:         5
+  authentication:       'plain',
+  ssl:                  true,
+  enable_starttls_auto: false,
+  open_timeout:         10,
+  read_timeout:         10
 }
   # config.action_mailer.smtp_settings = {
   # address: 'smtp-relay.brevo.com',

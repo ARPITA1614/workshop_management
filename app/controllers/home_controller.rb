@@ -6,5 +6,7 @@ class HomeController < ApplicationController
   def test_email
   BookingMailer.booking_confirmation(Booking.last.id).deliver_now
   render plain: "Email sent! Check your inbox."
+   rescue => e
+    render plain: "Error: #{e.message}"
 end
 end
