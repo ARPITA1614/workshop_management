@@ -32,7 +32,11 @@ class WebhooksController < ApplicationController
 
   def handle_checkout_completed(session)
     booking = Booking.find(session.metadata["booking_id"])
+    return if 
+    booking.stripe_transaction_id.present?
+
     workshop = booking.workshop
+    refunded=false
 
     Workshop.transaction do
       workshop.lock!
@@ -53,16 +57,22 @@ class WebhooksController < ApplicationController
         #   begin
         #     # Use a fresh database connection for the thread
         #     ActiveRecord::Base.connection_pool.with_connection do
-               MailingJob.perform_later(booking.id)
+              #  MailingJob.perform_later(booking.id)
         #     end
         #   rescue StandardError => e
         #     Rails.logger.error "Background Email Failed: #{e.message}"
         #   end
         # end
-
       else
         Stripe::Refund.create(payment_intent: session.payment_intent)
+        refunded=true
       end
     end # Transaction ends here, UI updates INSTANTLY
+    return if refunded
+    begin 
+     EmailService.send_booking_confirmation(booking.user.email, booking.user.full_name)
+    rescue => e
+      Rails.logger.error "Email failed: #{e.message}"
+    end
   end
 end
