@@ -43,7 +43,7 @@ class BookingsMailer < ApplicationMailer
         <h1>Booking Confirmed! 🎉</h1>
         <p>Hello #{@customer.full_name},</p>
         <p>Your booking for <strong>#{@workshop.name}</strong> has been confirmed.</p>
-        <p><strong>Booking ID:</strong> #{booking_id}</p>
+         <p><strong>Booking ID:</strong> #{@booking.id}</p>
         <p>Please find your QR code attached to this email.</p>
         <p>Thank you for booking with us!</p>
       </div>
