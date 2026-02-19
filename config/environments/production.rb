@@ -68,20 +68,17 @@ config.active_job.queue_adapter = :inline
   # Set host to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: ENV["HOST_NAME"], protocol: 'https' }
  
-  config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.delivery_method = :smtp
-config.action_mailer.smtp_settings = {
-  address:              'smtp-relay.brevo.com',
-  port:                 587,
-  user_name:            ENV['gmail_username'],
-  password:             ENV['gmail_password'],
-  authentication:       'login',
-  ssl:                  false,
-  enable_starttls_auto: true,
-  open_timeout:         30,
-  read_timeout:         30
-}
+  config.action_mailer.perform_deliveries = false
+  # config.action_mailer.raise_delivery_errors = true
+  # config.action_mailer.delivery_method = :smtp
+# config.action_mailer.smtp_settings = {
+#   address:              'smtp.gmail.com',
+#   port:                 587,
+#   user_name:            ENV['gmail_username'],
+#   password:             ENV['gmail_password'],  # Use Gmail App Password
+#   authentication:       'plain',
+#   enable_starttls_auto: true
+# }
 
   # config.action_mailer.smtp_settings = {
   # address: 'smtp-relay.brevo.com',

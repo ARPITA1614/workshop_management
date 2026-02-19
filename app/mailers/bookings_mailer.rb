@@ -1,4 +1,6 @@
 require "rqrcode"
+require "resend"
+require "base64"
 
 class BookingsMailer < ApplicationMailer
   def booking_confirmation(booking)
@@ -6,27 +8,48 @@ class BookingsMailer < ApplicationMailer
     @customer = booking.customer
     @workshop = booking.workshop
 
+    # Generate QR Code
     url = Rails.application.routes.url_helpers
-            .booking_details_booking_url(@booking)
+            .booking_details_booking_url(@booking, protocol: 'https', host: ENV['HOST_NAME'])
 
     qrcode = RQRCode::QRCode.new(url)
     png = qrcode.as_png(size: 300)
+    
+    # Convert PNG to base64 for Resend
+    qr_base64 = Base64.strict_encode64(png.to_s)
 
-    attachments["qrcode.png"] = {
-      mime_type: "image/png",
-      content: png.to_s
-    }
-     puts "=== MAIL CONFIG ==="
-    puts "Username: #{ENV['gmail_username'].inspect}"
-    puts "Password set?: #{ENV['gmail_password'].present?}"
+    # Send email via Resend
+    Resend.api_key = ENV['RESEND_API_KEY']
 
-    mail(
+    Resend::Emails.deliver({
+      from: 'Webinari <onboarding@resend.dev>',
       to: @customer.email,
-      subject: "Booking Confirmation for #{@workshop.name}"
-    )
+      subject: "Booking Confirmation for #{@workshop.name}",
+      html: render_booking_email,
+      attachments: [
+        {
+          filename: "qrcode.png",
+          content: qr_base64
+        }
+      ]
+    })
+  end
+
+  private
+
+  def render_booking_email
+    "
+      <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
+        <h1>Booking Confirmed! 🎉</h1>
+        <p>Hello #{@customer.name},</p>
+        <p>Your booking for <strong>#{@workshop.name}</strong> has been confirmed.</p>
+        <p><strong>Booking ID:</strong> #{@booking.booking_id}</p>
+        <p>Please find your QR code attached to this email.</p>
+        <p>Thank you for booking with us!</p>
+      </div>
+    "
   end
 end
-
 # @svg = qrcode.as_svg(
 #   color: "000",
 #   shape_rendering: "crispEdges",
