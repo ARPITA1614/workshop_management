@@ -1,6 +1,10 @@
 class BookingsController < ApplicationController
   before_action :authenticate_customer!, except: [:booking_details]
 
+  def index
+  @bookings = current_customer.bookings.includes(:workshop)
+  end
+
   def create
     @workshop = Workshop.find(params[:workshop_id])
 
