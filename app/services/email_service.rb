@@ -2,6 +2,8 @@ require 'sib-api-v3-sdk'
 
 class EmailService
   def self.send_booking_confirmation(user_email, user_name)
+    Rails.logger.info "BREVO KEY PRESENT?: #{ENV['BREVO_API_KEY'].present?}"
+
     SibApiV3Sdk.configure do |config|
       config.api_key['api-key'] = ENV['BREVO_API_KEY']
     end
