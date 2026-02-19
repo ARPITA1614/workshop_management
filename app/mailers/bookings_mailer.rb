@@ -41,7 +41,7 @@ class BookingsMailer < ApplicationMailer
     "
       <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
         <h1>Booking Confirmed! 🎉</h1>
-        <p>Hello #{@customer.name},</p>
+        <p>Hello #{@customer.full_name},</p>
         <p>Your booking for <strong>#{@workshop.name}</strong> has been confirmed.</p>
         <p><strong>Booking ID:</strong> #{@booking.booking_id}</p>
         <p>Please find your QR code attached to this email.</p>
