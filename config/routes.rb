@@ -27,7 +27,8 @@ Rails.application.routes.draw do
     get :success
   end
 end
-
+     
+get "/check_admin", to: "admin_setup#check"
 
   namespace :admin do
     get "dashboard" => "dashboard#index"
