@@ -71,8 +71,12 @@ class WebhooksController < ApplicationController
     return if refunded
     begin 
      EmailService.send_booking_confirmation(booking.customer.email, booking.customer.full_name)
-    rescue => e
-      Rails.logger.error "Email failed: #{e.message}"
-    end
+    rescue SibApiV3Sdk::ApiError => e
+  Rails.logger.error "Brevo Status Code: #{e.code}"
+  Rails.logger.error "Brevo Response Body: #{e.response_body}"
+rescue => e
+  Rails.logger.error "General Email Error: #{e.class}"
+  Rails.logger.error "General Email Message: #{e.message}"
+end
   end
 end
