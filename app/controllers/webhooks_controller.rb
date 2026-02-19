@@ -70,7 +70,7 @@ class WebhooksController < ApplicationController
     end # Transaction ends here, UI updates INSTANTLY
     return if refunded
     begin 
-     EmailService.send_booking_confirmation(booking.user.email, booking.user.full_name)
+     EmailService.send_booking_confirmation(booking.customer.email, booking.customer.full_name)
     rescue => e
       Rails.logger.error "Email failed: #{e.message}"
     end
