@@ -41,8 +41,8 @@ class Admin::RefundsController < AdminController
 
     @refund.state = "success"
     begin
-    RefundEmailService.send_refund_processed(@refund)
-    RefundEmailService.notify_admin(@refund)
+    RefundEmailService.customer_refund_success(@refund)
+    RefundEmailService.admin_refund_success(@refund)
     rescue  SibApiV3Sdk::ApiError => e
       Rails.logger.error "Brevo Refund Email Error: #{e.response_body}"
     end
