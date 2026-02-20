@@ -24,12 +24,12 @@ class RefundsController < ApplicationController
   def update
     if @refund.update(no_of_tickets: refund_params[:no_of_tickets])
       send_refund_notifications
-      redirect_to refund_acceptance_refund_path, notice: "You are elegible for refund for #{view_context.number_to_currency(@refund.refundable_amount(@workshop, refund_params[:no_of_tickets]))}"
+      redirect_to refund_acceptance_refund_path(@refund), notice: "You are eligible for refund for #{view_context.number_to_currency(@refund.refundable_amount(@workshop, refund_params[:no_of_tickets]))}"
     else
-      redirect_to refund_acceptance_refund_path, alert: 'Something went wrong'
+      redirect_to refund_acceptance_refund_path(@refund), alert: 'Something went wrong'
     end
   rescue StandardError => e
-    redirect_to refund_acceptance_refund_path, alert: e.message
+    redirect_to refund_acceptance_refund_path(@refund), alert: e.message
   end
 
   def refund_acceptance
