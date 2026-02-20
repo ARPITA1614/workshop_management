@@ -5,6 +5,11 @@ class BookingsController < ApplicationController
   @bookings = current_customer.bookings.includes(:workshop)
   end
 
+  def show
+  @booking = current_customer.bookings.find(params[:id])
+  end
+
+
   def create
     @workshop = Workshop.find(params[:workshop_id])
 
