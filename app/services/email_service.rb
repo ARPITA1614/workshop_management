@@ -2,100 +2,57 @@ require 'sib-api-v3-sdk'
 require 'rqrcode'
 require 'base64'
 
-class RefundEmailService
-  def self.configure_brevo
+class EmailService
+  def self.send_booking_confirmation(booking)
     SibApiV3Sdk.configure do |config|
       config.api_key['api-key'] = ENV['BREVO_API_KEY']
     end
-  end
 
-  def self.api
-    configure_brevo
-    SibApiV3Sdk::TransactionalEmailsApi.new
-  end
+    customer = booking.customer
+    workshop = booking.workshop
 
-  def self.sender
-    {
-      email: "arpitadmn@gmail.com",
-      name: "Workshop Booking App"
-    }
-  end
+    # 1️⃣ Generate Booking URL
+    # #
+    # url = Rails.application.routes.url_helpers
+    #         .booking_details_booking_url(@booking)
 
-  # 1️⃣ Customer – Refund Request Submitted
-  def self.customer_refund_requested(refund)
-    customer = refund.customer
-    workshop = refund.booking.workshop
+    url = Rails.application.routes.url_helpers
+            .booking_details_booking_url(
+              booking,
+              host: "workshop-management-bs7g.onrender.com",
+              protocol: "https"
+            )
 
-    email = SibApiV3Sdk::SendSmtpEmail.new(
+    # 2️⃣ Generate QR Code
+    qrcode = RQRCode::QRCode.new(url)
+    png = qrcode.as_png(size: 300)
+
+    # 3️⃣ Convert to Base64 (Brevo requires base64 attachments)
+    encoded_qr = Base64.strict_encode64(png.to_s)
+    Rails.logger.info "heyyyy"
+    api_instance = SibApiV3Sdk::TransactionalEmailsApi.new
+
+    send_smtp_email = SibApiV3Sdk::SendSmtpEmail.new(
       to: [{ email: customer.email, name: customer.full_name }],
-      sender: sender,
-      subject: "Refund Request Received for #{workshop.name}",
+      sender: {
+        email: "arpitadmn@gmail.com",
+        name: "Workshop Booking App"
+      },
+      subject: "Booking Confirmation for #{workshop.name}",
       htmlContent: "
         <h2>Hello #{customer.full_name},</h2>
-        <p>We have received your refund request for <strong>#{workshop.name}</strong>.</p>
-        <p>Our admin team will review it shortly.</p>
-      "
+        <p>Your booking for <strong>#{workshop.name}</strong> is confirmed 🎉</p>
+        <p>Date: #{workshop.start_date}</p>
+        <p>Please find your QR code attached.</p>
+      ",
+      attachment: [
+        {
+          content: encoded_qr,
+          name: "qrcode.png"
+        }
+      ]
     )
 
-    api.send_transac_email(email)
-  end
-
-  # 2️⃣ Admin – Refund Request Submitted
-  def self.admin_refund_requested(refund)
-    customer = refund.customer
-    workshop = refund.booking.workshop
-
-    email = SibApiV3Sdk::SendSmtpEmail.new(
-      to: [{ email: AdminUser.first.email }],
-      sender: sender,
-      subject: "New Refund Request - #{workshop.name}",
-      htmlContent: "
-        <h3>New Refund Request</h3>
-        <p>Customer: #{customer.full_name}</p>
-        <p>Workshop: #{workshop.name}</p>
-      "
-    )
-
-    api.send_transac_email(email)
-  end
-
-  # 3️⃣ Customer – Refund Successfully Processed
-  def self.customer_refund_success(refund)
-    customer = refund.customer
-    workshop = refund.booking.workshop
-    amount = refund.no_of_tickets * workshop.registration_fee
-
-    email = SibApiV3Sdk::SendSmtpEmail.new(
-      to: [{ email: customer.email, name: customer.full_name }],
-      sender: sender,
-      subject: "Refund Processed Successfully - #{workshop.name}",
-      htmlContent: "
-        <h2>Hello #{customer.full_name},</h2>
-        <p>Your refund for <strong>#{workshop.name}</strong> has been processed successfully.</p>
-        <p>Refund Amount: ₹#{amount}</p>
-        <p>The amount will reflect within 5-7 business days.</p>
-      "
-    )
-
-    api.send_transac_email(email)
-  end
-
-  # 4️⃣ Admin – Refund Successfully Processed
-  def self.admin_refund_success(refund)
-    customer = refund.customer
-    workshop = refund.booking.workshop
-
-    email = SibApiV3Sdk::SendSmtpEmail.new(
-      to: [{ email: AdminUser.first.email }],
-      sender: sender,
-      subject: "Refund Completed - #{workshop.name}",
-      htmlContent: "
-        <h3>Refund Completed</h3>
-        <p>Customer: #{customer.full_name}</p>
-        <p>Workshop: #{workshop.name}</p>
-      "
-    )
-
-    api.send_transac_email(email)
+    api_instance.send_transac_email(send_smtp_email)
   end
 end
