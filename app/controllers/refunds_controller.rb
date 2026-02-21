@@ -41,9 +41,18 @@ class RefundsController < ApplicationController
   private
 
   def send_refund_notifications
-    RefundNotificationMailer.admin_refund_requested(@refund)
-    RefundNotificationMailer.customer_refund_requested(@refund)
+    begin
+    RefundEmailService.admin_refund_requested(@refund)
+    RefundEmailService.customer_refund_requested(@refund)
+    rescue SibApiV3Sdk::ApiError=> e
+      Rails.logger.error "Brevo Refund Request Email Error: #{e.response_body}"
+    end
   end
+
+  # def send_refund_notifications
+  #   RefundNotificationMailer.admin_refund_requested(@refund)
+  #   RefundNotificationMailer.customer_refund_requested(@refund)
+  # end
 
   def set_refund_with_parents
     @refund = Refund.find(params[:id])

@@ -14,14 +14,14 @@ class Admin::RefundsController < AdminController
 
     @refund.stripe_refund_id = stripe_refund.id
     mark_success
-   
+
     Rails.logger.info "MAILER TRIGGERED"
 
     #  RefundNotificationMailer.refund_success_notification_to_customer(@refund).deliver_now!
     #  RefundNotificationMailer.refund_success_notification_to_admin(@refund).deliver_now!
 
     redirect_to admin_dashboard_path, notice: "Refund Processed successfully"
- 
+
 
   rescue Stripe::InvalidRequestError => error
     if error.message.include?("already been refunded")
@@ -40,14 +40,13 @@ class Admin::RefundsController < AdminController
       @refund.amount_refunded < @refund.booking.amount_paid
 
     @refund.state = "success"
+    @refund.save!
     begin
     RefundEmailService.customer_refund_success(@refund)
     RefundEmailService.admin_refund_success(@refund)
     rescue  SibApiV3Sdk::ApiError => e
       Rails.logger.error "Brevo Refund Email Error: #{e.response_body}"
     end
-
-    @refund.save!
   end
 
   def set_refunds
